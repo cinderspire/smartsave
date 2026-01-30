@@ -1,0 +1,46 @@
+name: smartsave
+description: Micro-Investment & Financial Wellness Platform - Start investing with just $1
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  flutter_riverpod: ^2.4.9
+  google_fonts: ^6.1.0
+  fl_chart: ^0.65.0
+  intl: ^0.18.1
+  shared_preferences: ^2.2.2
+  uuid: ^4.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.8
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "#10B981"
+  adaptive_icon_foreground: "assets/icon/app_icon.png"
+
+flutter_native_splash:
+  color: "#0F172A"
+  image: "assets/icon/app_icon.png"
+  android: true
+  ios: true
+  android_12:
+    color: "#0F172A"
+    image: "assets/icon/app_icon.png"
