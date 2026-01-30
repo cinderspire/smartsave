@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/theme/app_colors.dart';
+import 'features/goals/data/providers/settings_provider.dart';
 import 'features/home/presentation/screens/main_navigation_screen.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
 
@@ -24,16 +25,28 @@ void main() async {
   runApp(ProviderScope(child: SmartSaveApp(showOnboarding: !onboardingComplete)));
 }
 
-class SmartSaveApp extends StatelessWidget {
+class SmartSaveApp extends ConsumerWidget {
   final bool showOnboarding;
   const SmartSaveApp({super.key, required this.showOnboarding});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+
     return MaterialApp(
       title: 'SmartSave',
       debugShowCheckedModeBanner: false,
+      themeMode: themeMode,
       theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.light(
+          primary: AppColors.primaryGreen,
+          secondary: AppColors.primaryBlue,
+        ),
+        scaffoldBackgroundColor: Colors.grey.shade50,
+      ),
+      darkTheme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
         colorScheme: ColorScheme.dark(

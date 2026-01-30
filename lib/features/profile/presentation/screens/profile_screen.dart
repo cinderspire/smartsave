@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/glassmorphic_container.dart';
-import '../../../../shared/widgets/gradient_button.dart';
 import '../../../goals/data/providers/savings_provider.dart';
 import '../../../goals/data/providers/challenge_provider.dart';
+import '../../../goals/data/providers/settings_provider.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -16,7 +16,6 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  bool _notificationsEnabled = true;
   bool _biometricEnabled = true;
 
   @override
@@ -27,6 +26,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final goals = ref.watch(savingsGoalsProvider);
     final streak = ref.watch(savingsStreakProvider);
     final challengeSavings = ref.watch(totalChallengeSavingsProvider);
+    final currency = ref.watch(currencyProvider);
+    final themeMode = ref.watch(themeModeProvider);
+    final roundUpRule = ref.watch(roundUpRuleProvider);
+    final notificationsEnabled = ref.watch(notificationsProvider);
 
     final monthlyAvg = goals.isEmpty
         ? 0.0
@@ -35,24 +38,27 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             return sum + (months > 0 ? g.currentAmount / months : 0);
           });
 
-    final activeGoals = goals.where((g) => g.currentAmount > 0 && !g.isComplete).length;
+    final activeGoals =
+        goals.where((g) => g.currentAmount > 0 && !g.isComplete).length;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Profile', style: AppTextStyles.headlineMedium.copyWith(fontWeight: FontWeight.bold)),
+        title: Text('Profile & Settings',
+            style: AppTextStyles.headlineMedium
+                .copyWith(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: [
-          IconButton(icon: const Icon(Icons.settings_rounded), onPressed: () {}),
-        ],
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [AppColors.backgroundDark, AppColors.backgroundDark.withBlue(30)],
+            colors: [
+              AppColors.backgroundDark,
+              AppColors.backgroundDark.withBlue(30)
+            ],
           ),
         ),
         child: SafeArea(
@@ -63,12 +69,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               children: [
                 _buildProfileHeader(activeGoals, streak.currentStreak),
                 const SizedBox(height: 24),
-                _buildStatsGrid(totalSaved, monthlyAvg, totalRoundUps, challengeSavings),
+                _buildStatsGrid(
+                    totalSaved, monthlyAvg, totalRoundUps, challengeSavings),
                 const SizedBox(height: 24),
-                _buildPremiumCard(),
-                const SizedBox(height: 24),
-                _buildSettingsSection(roundUpsEnabled),
-                const SizedBox(height: 24),
+                _buildCurrencySection(currency),
+                const SizedBox(height: 16),
+                _buildThemeSection(themeMode),
+                const SizedBox(height: 16),
+                _buildRoundUpRulesSection(roundUpsEnabled, roundUpRule),
+                const SizedBox(height: 16),
+                _buildNotificationsSection(notificationsEnabled),
+                const SizedBox(height: 16),
                 _buildAccountSection(),
                 const SizedBox(height: 100),
               ],
@@ -108,22 +119,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               decoration: BoxDecoration(
                 color: AppColors.accentGold,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.backgroundDark, width: 3),
+                border:
+                    Border.all(color: AppColors.backgroundDark, width: 3),
               ),
-              child: const Icon(Icons.star_rounded, color: Colors.white, size: 16),
+              child: const Icon(Icons.star_rounded,
+                  color: Colors.white, size: 16),
             ),
           ],
         ),
         const SizedBox(height: 16),
-        Text('Smart Saver', style: AppTextStyles.headlineMedium.copyWith(color: AppColors.textPrimaryDark, fontWeight: FontWeight.bold)),
+        Text('Smart Saver',
+            style: AppTextStyles.headlineMedium.copyWith(
+                color: AppColors.textPrimaryDark,
+                fontWeight: FontWeight.bold)),
         const SizedBox(height: 4),
-        Text('user@smartsave.app', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textTertiaryDark)),
+        Text('user@smartsave.app',
+            style: AppTextStyles.bodyMedium
+                .copyWith(color: AppColors.textTertiaryDark)),
         const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
                 gradient: AppColors.goldGradient,
                 borderRadius: BorderRadius.circular(20),
@@ -131,25 +150,33 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.flag_rounded, color: Colors.white, size: 16),
+                  const Icon(Icons.flag_rounded,
+                      color: Colors.white, size: 16),
                   const SizedBox(width: 4),
-                  Text('$activeGoals Active', style: AppTextStyles.labelMedium.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text('$activeGoals Active',
+                      style: AppTextStyles.labelMedium.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
             const SizedBox(width: 8),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [Color(0xFFFF6B35), Color(0xFFFFB020)]),
+                gradient: const LinearGradient(
+                    colors: [Color(0xFFFF6B35), Color(0xFFFFB020)]),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.local_fire_department_rounded, color: Colors.white, size: 16),
+                  const Icon(Icons.local_fire_department_rounded,
+                      color: Colors.white, size: 16),
                   const SizedBox(width: 4),
-                  Text('$streak Day Streak', style: AppTextStyles.labelMedium.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text('$streak Day Streak',
+                      style: AppTextStyles.labelMedium.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
@@ -159,29 +186,43 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  Widget _buildStatsGrid(double totalSaved, double monthlyAvg, double roundUps, double challengeSavings) {
+  Widget _buildStatsGrid(double totalSaved, double monthlyAvg,
+      double roundUps, double challengeSavings) {
     return Column(
       children: [
         Row(
           children: [
-            Expanded(child: _buildStatCard('Total Saved', '\$${totalSaved.toStringAsFixed(0)}', Icons.savings_rounded, AppColors.primaryGreen)),
+            Expanded(
+                child: _buildStatCard('Total Saved',
+                    '\$${totalSaved.toStringAsFixed(0)}',
+                    Icons.savings_rounded, AppColors.primaryGreen)),
             const SizedBox(width: 12),
-            Expanded(child: _buildStatCard('Monthly Avg', '\$${monthlyAvg.toStringAsFixed(0)}', Icons.trending_up_rounded, AppColors.primaryBlue)),
+            Expanded(
+                child: _buildStatCard('Monthly Avg',
+                    '\$${monthlyAvg.toStringAsFixed(0)}',
+                    Icons.trending_up_rounded, AppColors.primaryBlue)),
           ],
         ),
         const SizedBox(height: 12),
         Row(
           children: [
-            Expanded(child: _buildStatCard('Round-ups', '\$${roundUps.toStringAsFixed(0)}', Icons.currency_exchange_rounded, AppColors.accentGold)),
+            Expanded(
+                child: _buildStatCard('Round-ups',
+                    '\$${roundUps.toStringAsFixed(0)}',
+                    Icons.currency_exchange_rounded, AppColors.accentGold)),
             const SizedBox(width: 12),
-            Expanded(child: _buildStatCard('Challenges', '\$${challengeSavings.toStringAsFixed(0)}', Icons.emoji_events_rounded, const Color(0xFF8B5CF6))),
+            Expanded(
+                child: _buildStatCard('Challenges',
+                    '\$${challengeSavings.toStringAsFixed(0)}',
+                    Icons.emoji_events_rounded, const Color(0xFF8B5CF6))),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildStatCard(String label, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+      String label, String value, IconData icon, Color color) {
     return GlassmorphicContainer(
       padding: const EdgeInsets.all(16),
       borderRadius: BorderRadius.circular(16),
@@ -189,101 +230,321 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         children: [
           Icon(icon, color: color, size: 28),
           const SizedBox(height: 8),
-          Text(value, style: AppTextStyles.titleLarge.copyWith(color: AppColors.textPrimaryDark, fontWeight: FontWeight.bold)),
+          Text(value,
+              style: AppTextStyles.titleLarge.copyWith(
+                  color: AppColors.textPrimaryDark,
+                  fontWeight: FontWeight.bold)),
           const SizedBox(height: 4),
-          Text(label, style: AppTextStyles.labelSmall.copyWith(color: AppColors.textTertiaryDark), textAlign: TextAlign.center),
+          Text(label,
+              style: AppTextStyles.labelSmall
+                  .copyWith(color: AppColors.textTertiaryDark),
+              textAlign: TextAlign.center),
         ],
       ),
     );
   }
 
-  Widget _buildPremiumCard() {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [AppColors.primaryGreen.withOpacity(0.3), AppColors.primaryBlue.withOpacity(0.3)],
-        ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primaryGreen.withOpacity(0.5)),
-      ),
+  Widget _buildCurrencySection(String currency) {
+    final currencies = [
+      {'code': 'USD', 'name': 'US Dollar', 'symbol': '\$'},
+      {'code': 'EUR', 'name': 'Euro', 'symbol': '\u20AC'},
+      {'code': 'GBP', 'name': 'British Pound', 'symbol': '\u00A3'},
+      {'code': 'JPY', 'name': 'Japanese Yen', 'symbol': '\u00A5'},
+      {'code': 'CAD', 'name': 'Canadian Dollar', 'symbol': 'CA\$'},
+      {'code': 'AUD', 'name': 'Australian Dollar', 'symbol': 'AU\$'},
+      {'code': 'CHF', 'name': 'Swiss Franc', 'symbol': 'CHF'},
+      {'code': 'INR', 'name': 'Indian Rupee', 'symbol': '\u20B9'},
+      {'code': 'TRY', 'name': 'Turkish Lira', 'symbol': '\u20BA'},
+      {'code': 'BRL', 'name': 'Brazilian Real', 'symbol': 'R\$'},
+    ];
+
+    return GlassCard(
+      margin: EdgeInsets.zero,
+      padding: const EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  gradient: AppColors.goldGradient,
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.accentGold.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.workspace_premium_rounded, color: Colors.white, size: 28),
+                child: Icon(Icons.attach_money_rounded,
+                    color: AppColors.accentGold, size: 22),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Upgrade to Premium', style: AppTextStyles.titleLarge.copyWith(color: AppColors.textPrimaryDark, fontWeight: FontWeight.bold)),
-                    Text('Unlock advanced features', style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondaryDark)),
-                  ],
+              const SizedBox(width: 12),
+              Text('Currency',
+                  style: AppTextStyles.titleLarge.copyWith(
+                      color: AppColors.textPrimaryDark,
+                      fontWeight: FontWeight.bold)),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: currencies.map((c) {
+              final isSelected = currency == c['code'];
+              return GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  ref
+                      .read(currencyProvider.notifier)
+                      .setCurrency(c['code']!);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 14, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? AppColors.accentGold.withOpacity(0.2)
+                        : AppColors.backgroundDarkCard,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: isSelected
+                          ? AppColors.accentGold
+                          : AppColors.glassBorder,
+                    ),
+                  ),
+                  child: Text(
+                    '${c['symbol']} ${c['code']}',
+                    style: AppTextStyles.labelMedium.copyWith(
+                      color: isSelected
+                          ? AppColors.accentGold
+                          : AppColors.textSecondaryDark,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
                 ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildThemeSection(ThemeMode themeMode) {
+    return GlassCard(
+      margin: EdgeInsets.zero,
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: ListTile(
+        leading: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.primaryBlue.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(
+            themeMode == ThemeMode.dark
+                ? Icons.dark_mode_rounded
+                : Icons.light_mode_rounded,
+            color: AppColors.primaryBlue,
+            size: 22,
+          ),
+        ),
+        title: Text('Dark Theme',
+            style: AppTextStyles.titleSmall
+                .copyWith(color: AppColors.textPrimaryDark)),
+        subtitle: Text(
+            themeMode == ThemeMode.dark ? 'Currently active' : 'Switch to dark mode',
+            style: AppTextStyles.bodySmall
+                .copyWith(color: AppColors.textTertiaryDark)),
+        trailing: Switch(
+          value: themeMode == ThemeMode.dark,
+          onChanged: (v) {
+            HapticFeedback.lightImpact();
+            ref.read(themeModeProvider.notifier).toggle();
+          },
+          activeColor: AppColors.primaryBlue,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRoundUpRulesSection(bool roundUpsEnabled, int roundUpRule) {
+    final ruleLabels = ['Nearest \$1', 'Nearest \$2', 'Nearest \$5'];
+    final ruleDescriptions = [
+      'Round purchases up to the next whole dollar',
+      'Round purchases up to the next \$2 increment',
+      'Round purchases up to the next \$5 increment',
+    ];
+
+    return GlassCard(
+      margin: EdgeInsets.zero,
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.accentGold.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(Icons.currency_exchange_rounded,
+                        color: AppColors.accentGold, size: 22),
+                  ),
+                  const SizedBox(width: 12),
+                  Text('Round-Up Rules',
+                      style: AppTextStyles.titleLarge.copyWith(
+                          color: AppColors.textPrimaryDark,
+                          fontWeight: FontWeight.bold)),
+                ],
+              ),
+              Switch(
+                value: roundUpsEnabled,
+                onChanged: (v) {
+                  HapticFeedback.lightImpact();
+                  ref.read(roundUpsEnabledProvider.notifier).set(v);
+                },
+                activeColor: AppColors.accentGold,
               ),
             ],
           ),
           const SizedBox(height: 16),
-          GradientButton(text: 'Start Free Trial', onPressed: () {}, width: double.infinity, height: 48, gradient: AppColors.goldGradient),
+          ...List.generate(3, (i) {
+            final isSelected = roundUpRule == i;
+            return GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                ref.read(roundUpRuleProvider.notifier).setRule(i);
+              },
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.accentGold.withOpacity(0.1)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: isSelected
+                        ? AppColors.accentGold
+                        : AppColors.glassBorder,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isSelected
+                            ? AppColors.accentGold
+                            : Colors.transparent,
+                        border: Border.all(
+                          color: isSelected
+                              ? AppColors.accentGold
+                              : AppColors.textTertiaryDark,
+                          width: 2,
+                        ),
+                      ),
+                      child: isSelected
+                          ? const Icon(Icons.check_rounded,
+                              color: Colors.white, size: 14)
+                          : null,
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            ruleLabels[i],
+                            style: AppTextStyles.titleSmall.copyWith(
+                              color: isSelected
+                                  ? AppColors.accentGold
+                                  : AppColors.textPrimaryDark,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            ruleDescriptions[i],
+                            style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.textTertiaryDark),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
         ],
       ),
     );
   }
 
-  Widget _buildSettingsSection(bool roundUpsEnabled) {
+  Widget _buildNotificationsSection(bool notificationsEnabled) {
     return GlassCard(
       margin: EdgeInsets.zero,
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Text('SETTINGS', style: AppTextStyles.labelSmall.copyWith(color: AppColors.textTertiaryDark, letterSpacing: 1)),
+          ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.primaryGreen.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(Icons.notifications_rounded,
+                  color: AppColors.primaryGreen, size: 22),
+            ),
+            title: Text('Notifications',
+                style: AppTextStyles.titleSmall
+                    .copyWith(color: AppColors.textPrimaryDark)),
+            subtitle: Text('Savings reminders & milestones',
+                style: AppTextStyles.bodySmall
+                    .copyWith(color: AppColors.textTertiaryDark)),
+            trailing: Switch(
+              value: notificationsEnabled,
+              onChanged: (v) {
+                HapticFeedback.lightImpact();
+                ref.read(notificationsProvider.notifier).toggle();
+              },
+              activeColor: AppColors.primaryGreen,
+            ),
           ),
-          _buildToggleSetting(
-            Icons.currency_exchange_rounded,
-            'Round-ups',
-            'Auto-save spare change',
-            roundUpsEnabled,
-            (v) => ref.read(roundUpsEnabledProvider.notifier).set(v),
+          Divider(color: AppColors.glassBorder, indent: 70, endIndent: 20),
+          ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF8B5CF6).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.fingerprint_rounded,
+                  color: Color(0xFF8B5CF6), size: 22),
+            ),
+            title: Text('Biometric Login',
+                style: AppTextStyles.titleSmall
+                    .copyWith(color: AppColors.textPrimaryDark)),
+            subtitle: Text('Face ID / Fingerprint',
+                style: AppTextStyles.bodySmall
+                    .copyWith(color: AppColors.textTertiaryDark)),
+            trailing: Switch(
+              value: _biometricEnabled,
+              onChanged: (v) {
+                HapticFeedback.lightImpact();
+                setState(() => _biometricEnabled = v);
+              },
+              activeColor: const Color(0xFF8B5CF6),
+            ),
           ),
-          _buildDivider(),
-          _buildToggleSetting(Icons.notifications_rounded, 'Notifications', 'Savings reminders', _notificationsEnabled, (v) => setState(() => _notificationsEnabled = v)),
-          _buildDivider(),
-          _buildToggleSetting(Icons.fingerprint_rounded, 'Biometric Login', 'Face ID / Fingerprint', _biometricEnabled, (v) => setState(() => _biometricEnabled = v)),
         ],
-      ),
-    );
-  }
-
-  Widget _buildToggleSetting(IconData icon, String title, String subtitle, bool value, ValueChanged<bool> onChanged) {
-    return ListTile(
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: AppColors.primaryGreen.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Icon(icon, color: AppColors.primaryGreen, size: 22),
-      ),
-      title: Text(title, style: AppTextStyles.titleSmall.copyWith(color: AppColors.textPrimaryDark)),
-      subtitle: Text(subtitle, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textTertiaryDark)),
-      trailing: Switch(
-        value: value,
-        onChanged: (v) {
-          HapticFeedback.lightImpact();
-          onChanged(v);
-        },
-        activeColor: AppColors.primaryGreen,
       ),
     );
   }
@@ -296,22 +557,41 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Text('ACCOUNT', style: AppTextStyles.labelSmall.copyWith(color: AppColors.textTertiaryDark, letterSpacing: 1)),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            child: Text('ACCOUNT',
+                style: AppTextStyles.labelSmall.copyWith(
+                    color: AppColors.textTertiaryDark, letterSpacing: 1)),
           ),
-          _buildSettingsItem(Icons.account_balance_rounded, 'Linked Accounts', onTap: () {}),
+          _buildSettingsItem(Icons.account_balance_rounded, 'Linked Accounts',
+              onTap: () {}),
           _buildDivider(),
-          _buildSettingsItem(Icons.security_rounded, 'Security', onTap: () {}),
+          _buildSettingsItem(Icons.security_rounded, 'Security',
+              onTap: () {}),
           _buildDivider(),
-          _buildSettingsItem(Icons.help_outline_rounded, 'Help & Support', onTap: () {}),
+          _buildSettingsItem(Icons.help_outline_rounded, 'Help & Support',
+              onTap: () {}),
           _buildDivider(),
-          _buildSettingsItem(Icons.logout_rounded, 'Sign Out', textColor: AppColors.loss, onTap: () {}),
+          _buildSettingsItem(Icons.info_outline_rounded, 'About SmartSave',
+              onTap: () {
+            showAboutDialog(
+              context: context,
+              applicationName: 'SmartSave',
+              applicationVersion: '1.0.0',
+              applicationLegalese:
+                  'A micro-savings and financial wellness app.',
+            );
+          }),
+          _buildDivider(),
+          _buildSettingsItem(Icons.logout_rounded, 'Sign Out',
+              textColor: AppColors.loss, onTap: () {}),
         ],
       ),
     );
   }
 
-  Widget _buildSettingsItem(IconData icon, String title, {Color? textColor, required VoidCallback onTap}) {
+  Widget _buildSettingsItem(IconData icon, String title,
+      {Color? textColor, required VoidCallback onTap}) {
     return ListTile(
       onTap: onTap,
       leading: Container(
@@ -320,12 +600,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           color: (textColor ?? AppColors.primaryGreen).withOpacity(0.1),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Icon(icon, color: textColor ?? AppColors.primaryGreen, size: 22),
+        child: Icon(icon,
+            color: textColor ?? AppColors.primaryGreen, size: 22),
       ),
-      title: Text(title, style: AppTextStyles.titleSmall.copyWith(color: textColor ?? AppColors.textPrimaryDark)),
-      trailing: Icon(Icons.chevron_right_rounded, color: AppColors.textTertiaryDark),
+      title: Text(title,
+          style: AppTextStyles.titleSmall
+              .copyWith(color: textColor ?? AppColors.textPrimaryDark)),
+      trailing: Icon(Icons.chevron_right_rounded,
+          color: AppColors.textTertiaryDark),
     );
   }
 
-  Widget _buildDivider() => Divider(color: AppColors.glassBorder, indent: 70, endIndent: 20);
+  Widget _buildDivider() =>
+      Divider(color: AppColors.glassBorder, indent: 70, endIndent: 20);
 }

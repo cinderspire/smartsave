@@ -3,8 +3,9 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/glassmorphic_container.dart';
 import '../../../challenges/presentation/screens/challenges_screen.dart';
 import '../../../goals/presentation/screens/goals_screen.dart';
-import '../../../jars/presentation/screens/jars_screen.dart';
+import '../../../roundup/presentation/screens/roundup_screen.dart';
 import '../../../stats/presentation/screens/stats_screen.dart';
+import '../../../tips/presentation/screens/tips_screen.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
 import 'dashboard_screen.dart';
 
@@ -21,19 +22,21 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<Widget> _screens = [
     const DashboardScreen(),
     const GoalsScreen(),
+    const RoundUpScreen(),
     const ChallengesScreen(),
-    const JarsScreen(),
     const StatsScreen(),
+    const TipsScreen(),
     const ProfileScreen(),
   ];
 
   final List<Map<String, dynamic>> _navItems = [
     {'icon': Icons.home_rounded, 'label': 'Home'},
     {'icon': Icons.flag_rounded, 'label': 'Goals'},
+    {'icon': Icons.currency_exchange_rounded, 'label': 'Round-Up'},
     {'icon': Icons.emoji_events_rounded, 'label': 'Challenges'},
-    {'icon': Icons.account_balance_rounded, 'label': 'Jars'},
     {'icon': Icons.bar_chart_rounded, 'label': 'Stats'},
-    {'icon': Icons.person_rounded, 'label': 'Profile'},
+    {'icon': Icons.lightbulb_rounded, 'label': 'Tips'},
+    {'icon': Icons.settings_rounded, 'label': 'Settings'},
   ];
 
   @override
@@ -50,7 +53,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   Widget _buildBottomNav() {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
@@ -66,7 +69,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         child: GlassmorphicContainer(
           blur: 15,
           opacity: 0.3,
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(
@@ -88,7 +91,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           gradient: isSelected ? AppColors.wealthGradient : null,
           borderRadius: BorderRadius.circular(20),
@@ -96,7 +99,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         child: Icon(
           item['icon'] as IconData,
           color: isSelected ? Colors.white : AppColors.textTertiaryDark,
-          size: 24,
+          size: 22,
         ),
       ),
     );
