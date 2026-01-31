@@ -3,22 +3,15 @@ workflows:
     name: iOS Release - smartsave
     max_build_duration: 120
     instance_type: mac_mini_m2
-    integrations:
-      app_store_connect: Codemagic
     environment:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.smartsave.app
       vars:
-        APP_STORE_CONNECT_ISSUER_ID: ${{APP_STORE_CONNECT_ISSUER_ID}}
-        APP_STORE_CONNECT_KEY_IDENTIFIER: ${{APP_STORE_CONNECT_KEY_IDENTIFIER}}
-        APP_STORE_CONNECT_PRIVATE_KEY: ${{APP_STORE_CONNECT_PRIVATE_KEY}}
         BUNDLE_ID: "com.smartsave.app"
       flutter: 3.38.7
       xcode: latest
       cocoapods: default
-      groups:
-        - app_store_credentials
     scripts:
       - name: Set up code signing settings on Xcode project
         script: |
@@ -33,12 +26,11 @@ workflows:
         script: |
           flutter build ipa --release \
             --build-name=1.0.0 \
-            --build-number=$((PROJECT_BUILD_NUMBER)) \
+            --build-number=$($(app-store-connect get-latest-testflight-build-number "$BUNDLE_ID" || echo 0) + 1) \
             --export-options-plist=/Users/builder/export_options.plist
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
-      - flutter_drive.log
     publishing:
       app_store_connect:
         auth: integration
@@ -47,7 +39,7 @@ workflows:
         submit_to_app_store: false
       email:
         recipients:
-          - dev@codemagic.io
+          - mustafa.bilgic@student.auc.edu.tr
         notify:
           success: true
           failure: true
@@ -57,14 +49,9 @@ workflows:
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
-      android_signing:
-        - keystore_reference
       vars:
         BUNDLE_ID: "com.smartsave.app"
       flutter: 3.38.7
-      groups:
-        - google_play_credentials
-        - app_store_credentials
     scripts:
       - name: Get Flutter packages
         script: |
@@ -73,19 +60,14 @@ workflows:
         script: |
           flutter build appbundle --release \
             --build-name=1.0.0 \
-            --build-number=$((PROJECT_BUILD_NUMBER))
+            --build-number=$PROJECT_BUILD_NUMBER
     artifacts:
       - build/app/outputs/bundle/**/*.aab
       - build/app/outputs/mapping/**/mapping.txt
-      - flutter_drive.log
     publishing:
-      google_play:
-        credentials: ${{GCLOUD_SERVICE_ACCOUNT_CREDENTIALS}}
-        track: internal
-        submit_as_draft: true
       email:
         recipients:
-          - dev@codemagic.io
+          - mustafa.bilgic@student.auc.edu.tr
         notify:
           success: true
           failure: true
