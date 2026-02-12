@@ -2,7 +2,7 @@
 
 ## Project Title
 
-**SmartSave — The Personal Finance App That Makes Saving Money Feel Like a Game**
+**SmartSave — Spare Change. Superpowered.**
 
 ## Tagline
 
