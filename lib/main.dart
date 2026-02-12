@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/theme/app_colors.dart';
+import 'core/services/revenue_cat_service.dart';
 import 'features/goals/data/providers/settings_provider.dart';
 import 'features/home/presentation/screens/main_navigation_screen.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -11,7 +12,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final prefs = await SharedPreferences.getInstance();
-  final onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
+  final onboardingComplete = prefs.getBool('onboarding_complete') ?? true; // Demo mode: skip onboarding
+
+  // Initialize RevenueCat (non-blocking – app works in free-tier if this fails).
+  RevenueCatService.instance.init();
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -22,27 +26,28 @@ void main() async {
     ),
   );
 
-  runApp(ProviderScope(child: SmartSaveApp(showOnboarding: !onboardingComplete)));
+  runApp(ProviderScope(child: RebeccaApp(showOnboarding: !onboardingComplete)));
 }
 
-class SmartSaveApp extends ConsumerWidget {
+class RebeccaApp extends ConsumerWidget {
   final bool showOnboarding;
-  const SmartSaveApp({super.key, required this.showOnboarding});
+  const RebeccaApp({super.key, required this.showOnboarding});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp(
-      title: 'SmartSave',
+      title: 'Rebecca',
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
         colorScheme: ColorScheme.light(
-          primary: AppColors.primaryGreen,
-          secondary: AppColors.primaryBlue,
+          primary: AppColors.primary,
+          secondary: AppColors.secondary,
+          tertiary: AppColors.accentGreen,
         ),
         scaffoldBackgroundColor: Colors.grey.shade50,
       ),
@@ -50,8 +55,9 @@ class SmartSaveApp extends ConsumerWidget {
         useMaterial3: true,
         brightness: Brightness.dark,
         colorScheme: ColorScheme.dark(
-          primary: AppColors.primaryGreen,
-          secondary: AppColors.primaryBlue,
+          primary: AppColors.accentGreen,
+          secondary: AppColors.secondary,
+          tertiary: AppColors.accentBlue,
           surface: AppColors.backgroundDarkCard,
         ),
         scaffoldBackgroundColor: AppColors.backgroundDark,

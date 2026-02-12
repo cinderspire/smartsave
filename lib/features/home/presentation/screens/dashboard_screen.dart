@@ -34,7 +34,7 @@ class DashboardScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SmartSave'),
+        title: const Text('Rebecca'),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [

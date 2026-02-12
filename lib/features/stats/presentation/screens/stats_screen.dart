@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/glassmorphic_container.dart';
+import '../../../../core/widgets/premium_gate.dart';
 import '../../../goals/data/providers/savings_provider.dart';
 import '../../../goals/data/providers/challenge_provider.dart';
 
@@ -100,8 +101,11 @@ class StatsScreen extends ConsumerWidget {
                 _buildGoalsAnalytics(goals),
                 const SizedBox(height: 24),
 
-                // Insights
-                _buildInsightsSection(savingsRate, streak.currentStreak, totalSavedAllTime),
+                // Insights (Premium)
+                PremiumGate(
+                  featureName: 'AI Insights',
+                  child: _buildInsightsSection(savingsRate, streak.currentStreak, totalSavedAllTime),
+                ),
                 const SizedBox(height: 100),
               ],
             ),

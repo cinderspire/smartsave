@@ -7,6 +7,8 @@ import '../../../../shared/widgets/glassmorphic_container.dart';
 import '../../../goals/data/providers/savings_provider.dart';
 import '../../../goals/data/providers/challenge_provider.dart';
 import '../../../goals/data/providers/settings_provider.dart';
+import '../../../../core/services/revenue_cat_service.dart';
+import '../../../premium/presentation/screens/paywall_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -72,6 +74,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 _buildStatsGrid(
                     totalSaved, monthlyAvg, totalRoundUps, challengeSavings),
                 const SizedBox(height: 24),
+                _buildPremiumSection(),
+                const SizedBox(height: 16),
                 _buildCurrencySection(currency),
                 const SizedBox(height: 16),
                 _buildThemeSection(themeMode),
@@ -239,6 +243,56 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               style: AppTextStyles.labelSmall
                   .copyWith(color: AppColors.textTertiaryDark),
               textAlign: TextAlign.center),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPremiumSection() {
+    final isPremium = ref.watch(premiumProvider);
+
+    return GlassCard(
+      margin: EdgeInsets.zero,
+      onTap: isPremium ? null : () => PaywallScreen.show(context),
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              gradient: isPremium ? AppColors.wealthGradient : AppColors.goldGradient,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(
+              isPremium ? Icons.verified_rounded : Icons.workspace_premium_rounded,
+              color: Colors.white,
+              size: 28,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  isPremium ? 'Rebecca Premium' : 'Upgrade to Premium',
+                  style: AppTextStyles.titleLarge.copyWith(
+                    color: AppColors.textPrimaryDark,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  isPremium
+                      ? 'You have full access to all features'
+                      : 'Unlock AI insights, export, multi-currency & more',
+                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textTertiaryDark),
+                ),
+              ],
+            ),
+          ),
+          if (!isPremium)
+            Icon(Icons.chevron_right_rounded, color: AppColors.accentGold),
         ],
       ),
     );
@@ -572,14 +626,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           _buildSettingsItem(Icons.help_outline_rounded, 'Help & Support',
               onTap: () {}),
           _buildDivider(),
-          _buildSettingsItem(Icons.info_outline_rounded, 'About SmartSave',
+          _buildSettingsItem(Icons.info_outline_rounded, 'About Rebecca',
               onTap: () {
             showAboutDialog(
               context: context,
-              applicationName: 'SmartSave',
+              applicationName: 'Rebecca',
               applicationVersion: '1.0.0',
               applicationLegalese:
-                  'A micro-savings and financial wellness app.',
+                  'Personal finance, budget tracking & micro-savings.\nPowered by RevenueCat.',
             );
           }),
           _buildDivider(),
