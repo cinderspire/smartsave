@@ -108,7 +108,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primaryGreen.withOpacity(0.3),
+                    color: AppColors.primaryGreen.withValues(alpha: 0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
@@ -292,7 +292,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           ),
           if (!isPremium)
-            Icon(Icons.chevron_right_rounded, color: AppColors.accentGold),
+            const Icon(Icons.chevron_right_rounded, color: AppColors.accentGold),
         ],
       ),
     );
@@ -323,10 +323,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.accentGold.withOpacity(0.1),
+                  color: AppColors.accentGold.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(Icons.attach_money_rounded,
+                child: const Icon(Icons.attach_money_rounded,
                     color: AppColors.accentGold, size: 22),
               ),
               const SizedBox(width: 12),
@@ -354,7 +354,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppColors.accentGold.withOpacity(0.2)
+                        ? AppColors.accentGold.withValues(alpha: 0.2)
                         : AppColors.backgroundDarkCard,
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
@@ -390,7 +390,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.primaryBlue.withOpacity(0.1),
+            color: AppColors.primaryBlue.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(
@@ -414,7 +414,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             HapticFeedback.lightImpact();
             ref.read(themeModeProvider.notifier).toggle();
           },
-          activeColor: AppColors.primaryBlue,
+          activeThumbColor: AppColors.primaryBlue,
         ),
       ),
     );
@@ -442,10 +442,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.accentGold.withOpacity(0.1),
+                      color: AppColors.accentGold.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(Icons.currency_exchange_rounded,
+                    child: const Icon(Icons.currency_exchange_rounded,
                         color: AppColors.accentGold, size: 22),
                   ),
                   const SizedBox(width: 12),
@@ -461,7 +461,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   HapticFeedback.lightImpact();
                   ref.read(roundUpsEnabledProvider.notifier).set(v);
                 },
-                activeColor: AppColors.accentGold,
+                activeThumbColor: AppColors.accentGold,
               ),
             ],
           ),
@@ -478,7 +478,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? AppColors.accentGold.withOpacity(0.1)
+                      ? AppColors.accentGold.withValues(alpha: 0.1)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
@@ -551,10 +551,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             leading: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
+                color: AppColors.primaryGreen.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(Icons.notifications_rounded,
+              child: const Icon(Icons.notifications_rounded,
                   color: AppColors.primaryGreen, size: 22),
             ),
             title: Text('Notifications',
@@ -569,7 +569,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 HapticFeedback.lightImpact();
                 ref.read(notificationsProvider.notifier).toggle();
               },
-              activeColor: AppColors.primaryGreen,
+              activeThumbColor: AppColors.primaryGreen,
             ),
           ),
           Divider(color: AppColors.glassBorder, indent: 70, endIndent: 20),
@@ -577,7 +577,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             leading: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFF8B5CF6).withOpacity(0.1),
+                color: const Color(0xFF8B5CF6).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(Icons.fingerprint_rounded,
@@ -595,7 +595,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 HapticFeedback.lightImpact();
                 setState(() => _biometricEnabled = v);
               },
-              activeColor: const Color(0xFF8B5CF6),
+              activeThumbColor: const Color(0xFF8B5CF6),
             ),
           ),
         ],
@@ -651,7 +651,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: (textColor ?? AppColors.primaryGreen).withOpacity(0.1),
+          color: (textColor ?? AppColors.primaryGreen).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(icon,
@@ -660,7 +660,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       title: Text(title,
           style: AppTextStyles.titleSmall
               .copyWith(color: textColor ?? AppColors.textPrimaryDark)),
-      trailing: Icon(Icons.chevron_right_rounded,
+      trailing: const Icon(Icons.chevron_right_rounded,
           color: AppColors.textTertiaryDark),
     );
   }

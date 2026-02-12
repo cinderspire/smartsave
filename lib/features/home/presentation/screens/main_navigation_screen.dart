@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/glassmorphic_container.dart';
-import '../../../challenges/presentation/screens/challenges_screen.dart';
 import '../../../goals/presentation/screens/goals_screen.dart';
-import '../../../roundup/presentation/screens/roundup_screen.dart';
+import '../../../jars/presentation/screens/jars_screen.dart';
 import '../../../stats/presentation/screens/stats_screen.dart';
-import '../../../tips/presentation/screens/tips_screen.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
 import 'dashboard_screen.dart';
 
@@ -22,20 +20,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<Widget> _screens = [
     const DashboardScreen(),
     const GoalsScreen(),
-    const RoundUpScreen(),
-    const ChallengesScreen(),
+    const JarsScreen(),
     const StatsScreen(),
-    const TipsScreen(),
     const ProfileScreen(),
   ];
 
   final List<Map<String, dynamic>> _navItems = [
     {'icon': Icons.home_rounded, 'label': 'Home'},
     {'icon': Icons.flag_rounded, 'label': 'Goals'},
-    {'icon': Icons.currency_exchange_rounded, 'label': 'Round-Up'},
-    {'icon': Icons.emoji_events_rounded, 'label': 'Challenges'},
+    {'icon': Icons.account_balance_rounded, 'label': 'Jars'},
     {'icon': Icons.bar_chart_rounded, 'label': 'Stats'},
-    {'icon': Icons.lightbulb_rounded, 'label': 'Tips'},
     {'icon': Icons.settings_rounded, 'label': 'Settings'},
   ];
 
@@ -58,7 +52,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),

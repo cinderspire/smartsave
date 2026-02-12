@@ -74,7 +74,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 padding: const EdgeInsets.all(16),
                 child: TextButton(
                   onPressed: _completeOnboarding,
-                  child: Text(
+                  child: const Text(
                     'Skip',
                     style: TextStyle(
                       color: AppColors.textTertiaryDark,
@@ -163,8 +163,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primaryGreen.withOpacity(0.2),
-                  AppColors.primaryBlue.withOpacity(0.2),
+                  AppColors.primaryGreen.withValues(alpha: 0.2),
+                  AppColors.primaryBlue.withValues(alpha: 0.2),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,

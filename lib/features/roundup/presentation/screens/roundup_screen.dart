@@ -101,7 +101,7 @@ class RoundUpScreen extends ConsumerWidget {
                       padding: const EdgeInsets.all(30),
                       child: Column(
                         children: [
-                          Icon(Icons.receipt_long_rounded,
+                          const Icon(Icons.receipt_long_rounded,
                               color: AppColors.textTertiaryDark, size: 48),
                           const SizedBox(height: 12),
                           Text(
@@ -135,7 +135,7 @@ class RoundUpScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.accentGold.withOpacity(0.3),
+            color: AppColors.accentGold.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -172,7 +172,7 @@ class RoundUpScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Icon(Icons.currency_exchange_rounded,
@@ -227,7 +227,7 @@ class RoundUpScreen extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.currency_exchange_rounded,
+                  const Icon(Icons.currency_exchange_rounded,
                       color: AppColors.accentGold, size: 22),
                   const SizedBox(width: 10),
                   Text(
@@ -243,7 +243,7 @@ class RoundUpScreen extends ConsumerWidget {
                   HapticFeedback.lightImpact();
                   ref.read(roundUpsEnabledProvider.notifier).set(v);
                 },
-                activeColor: AppColors.accentGold,
+                activeThumbColor: AppColors.accentGold,
               ),
             ],
           ),
@@ -268,7 +268,7 @@ class RoundUpScreen extends ConsumerWidget {
                           horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? AppColors.accentGold.withOpacity(0.2)
+                            ? AppColors.accentGold.withValues(alpha: 0.2)
                             : AppColors.backgroundDarkCard,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
@@ -330,7 +330,7 @@ class RoundUpScreen extends ConsumerWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.flag_rounded,
+              const Icon(Icons.flag_rounded,
                   color: AppColors.primaryGreen, size: 22),
               const SizedBox(width: 10),
               Expanded(
@@ -389,15 +389,15 @@ class RoundUpScreen extends ConsumerWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryGreen.withOpacity(0.15),
+                      color: AppColors.primaryGreen.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                       border:
-                          Border.all(color: AppColors.primaryGreen.withOpacity(0.3)),
+                          Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.3)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.add_rounded,
+                        const Icon(Icons.add_rounded,
                             color: AppColors.primaryGreen, size: 16),
                         const SizedBox(width: 6),
                         Text(
@@ -439,10 +439,10 @@ class RoundUpScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.accentGold.withOpacity(0.15),
+              color: AppColors.accentGold.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(Icons.shopping_bag_rounded,
+            child: const Icon(Icons.shopping_bag_rounded,
                 color: AppColors.accentGold, size: 22),
           ),
           const SizedBox(width: 14),
@@ -519,10 +519,10 @@ class RoundUpScreen extends ConsumerWidget {
               top: 24,
               bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.backgroundDarkElevated,
               borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(24)),
+                  BorderRadius.vertical(top: Radius.circular(24)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -555,15 +555,15 @@ class RoundUpScreen extends ConsumerWidget {
                 const SizedBox(height: 20),
                 TextField(
                   controller: merchantController,
-                  style: TextStyle(color: AppColors.textPrimaryDark),
+                  style: const TextStyle(color: AppColors.textPrimaryDark),
                   decoration: InputDecoration(
                     labelText: 'Merchant',
                     labelStyle:
-                        TextStyle(color: AppColors.textTertiaryDark),
+                        const TextStyle(color: AppColors.textTertiaryDark),
                     hintText: 'e.g. Coffee Shop',
                     hintStyle: TextStyle(
                         color:
-                            AppColors.textTertiaryDark.withOpacity(0.5)),
+                            AppColors.textTertiaryDark.withValues(alpha: 0.5)),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide:
@@ -581,14 +581,14 @@ class RoundUpScreen extends ConsumerWidget {
                   controller: amountController,
                   keyboardType: const TextInputType.numberWithOptions(
                       decimal: true),
-                  style: TextStyle(color: AppColors.textPrimaryDark),
+                  style: const TextStyle(color: AppColors.textPrimaryDark),
                   onChanged: (_) => setSheetState(() {}),
                   decoration: InputDecoration(
                     labelText: 'Purchase Amount (\$)',
                     labelStyle:
-                        TextStyle(color: AppColors.textTertiaryDark),
+                        const TextStyle(color: AppColors.textTertiaryDark),
                     prefixText: '\$ ',
-                    prefixStyle: TextStyle(color: AppColors.accentGold),
+                    prefixStyle: const TextStyle(color: AppColors.accentGold),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide:
@@ -606,10 +606,10 @@ class RoundUpScreen extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.accentGold.withOpacity(0.1),
+                      color: AppColors.accentGold.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                          color: AppColors.accentGold.withOpacity(0.3)),
+                          color: AppColors.accentGold.withValues(alpha: 0.3)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -627,7 +627,7 @@ class RoundUpScreen extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        Icon(Icons.savings_rounded,
+                        const Icon(Icons.savings_rounded,
                             color: AppColors.accentGold, size: 32),
                       ],
                     ),
@@ -695,7 +695,7 @@ class RoundUpScreen extends ConsumerWidget {
             color: AppColors.backgroundDarkElevated,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-                color: AppColors.primaryGreen.withOpacity(0.5), width: 2),
+                color: AppColors.primaryGreen.withValues(alpha: 0.5), width: 2),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -703,10 +703,10 @@ class RoundUpScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withOpacity(0.2),
+                  color: AppColors.primaryGreen.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.emoji_events_rounded,
+                child: const Icon(Icons.emoji_events_rounded,
                     color: AppColors.primaryGreen, size: 48),
               ),
               const SizedBox(height: 20),

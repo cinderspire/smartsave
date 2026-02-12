@@ -52,7 +52,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primaryGreen.withOpacity(0.3),
+                      color: AppColors.primaryGreen.withValues(alpha: 0.3),
                       blurRadius: 30,
                       offset: const Offset(0, 10),
                     ),
@@ -162,7 +162,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.15),
+              color: AppColors.primaryGreen.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: AppColors.primaryGreen, size: 22),

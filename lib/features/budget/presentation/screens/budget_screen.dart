@@ -56,7 +56,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                 const SizedBox(height: 24),
                 Text('Categories', style: AppTextStyles.headlineSmall.copyWith(color: AppColors.textPrimaryDark, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 16),
-                ..._categories.map((cat) => _buildCategoryCard(cat)).toList(),
+                ..._categories.map((cat) => _buildCategoryCard(cat)),
                 const SizedBox(height: 100),
               ],
             ),
@@ -77,7 +77,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryGreen.withOpacity(0.3),
+            color: AppColors.primaryGreen.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -99,7 +99,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text('${percentUsed.toStringAsFixed(0)}% used', style: AppTextStyles.labelMedium.copyWith(color: Colors.white)),
@@ -111,7 +111,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
             borderRadius: BorderRadius.circular(8),
             child: LinearProgressIndicator(
               value: percentUsed / 100,
-              backgroundColor: Colors.white.withOpacity(0.2),
+              backgroundColor: Colors.white.withValues(alpha: 0.2),
               valueColor: AlwaysStoppedAnimation<Color>(remaining >= 0 ? Colors.white : AppColors.loss),
               minHeight: 8,
             ),
@@ -196,7 +196,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
       decoration: BoxDecoration(
         color: AppColors.backgroundDarkCard,
         borderRadius: BorderRadius.circular(16),
-        border: isOverBudget ? Border.all(color: AppColors.loss.withOpacity(0.5)) : null,
+        border: isOverBudget ? Border.all(color: AppColors.loss.withValues(alpha: 0.5)) : null,
       ),
       child: Column(
         children: [
@@ -205,7 +205,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: (category['color'] as Color).withOpacity(0.2),
+                  color: (category['color'] as Color).withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(category['icon'] as IconData, color: category['color'] as Color, size: 24),

@@ -98,7 +98,7 @@ class ChallengesScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF8B5CF6).withOpacity(0.3),
+            color: const Color(0xFF8B5CF6).withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -130,7 +130,7 @@ class ChallengesScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Icon(Icons.emoji_events_rounded, color: Colors.white, size: 40),
@@ -162,7 +162,7 @@ class ChallengesScreen extends ConsumerWidget {
         decoration: BoxDecoration(
           color: AppColors.backgroundDarkCard,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color.withOpacity(challenge.isActive ? 0.4 : 0.15)),
+          border: Border.all(color: color.withValues(alpha: challenge.isActive ? 0.4 : 0.15)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +189,7 @@ class ChallengesScreen extends ConsumerWidget {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: color.withOpacity(0.2),
+                          color: color.withValues(alpha: 0.2),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(icon, color: color, size: 20),
@@ -219,7 +219,7 @@ class ChallengesScreen extends ConsumerWidget {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
-                                color: AppColors.textTertiaryDark.withOpacity(0.2),
+                                color: AppColors.textTertiaryDark.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
@@ -234,8 +234,8 @@ class ChallengesScreen extends ConsumerWidget {
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                               decoration: BoxDecoration(
                                 color: isAhead
-                                    ? AppColors.profit.withOpacity(0.15)
-                                    : AppColors.loss.withOpacity(0.15),
+                                    ? AppColors.profit.withValues(alpha: 0.15)
+                                    : AppColors.loss.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
@@ -351,7 +351,7 @@ class ChallengesScreen extends ConsumerWidget {
                 color: isCompleted
                     ? color
                     : isCurrent
-                        ? color.withOpacity(0.3)
+                        ? color.withValues(alpha: 0.3)
                         : AppColors.backgroundDarkElevated,
                 borderRadius: BorderRadius.circular(8),
                 border: isCurrent ? Border.all(color: color, width: 2) : null,
@@ -517,7 +517,7 @@ class ChallengesScreen extends ConsumerWidget {
       child: Center(
         child: Column(
           children: [
-            Icon(Icons.emoji_events_rounded, color: AppColors.textTertiaryDark, size: 56),
+            const Icon(Icons.emoji_events_rounded, color: AppColors.textTertiaryDark, size: 56),
             const SizedBox(height: 16),
             Text(
               'No active challenges',
@@ -569,7 +569,7 @@ class ChallengesScreen extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: (idea['color'] as Color).withOpacity(0.2),
+                    color: (idea['color'] as Color).withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(idea['icon'] as IconData, color: idea['color'] as Color, size: 22),
@@ -608,9 +608,9 @@ class ChallengesScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       builder: (ctx) => Container(
         height: MediaQuery.of(ctx).size.height * 0.7,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.backgroundDarkElevated,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
           children: [
@@ -634,7 +634,7 @@ class ChallengesScreen extends ConsumerWidget {
                       Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: color.withOpacity(0.2),
+                          color: color.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Icon(icon, color: color, size: 28),
@@ -810,7 +810,7 @@ class ChallengesScreen extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(14),
         ),
         child: Column(
@@ -857,9 +857,9 @@ class ChallengesScreen extends ConsumerWidget {
           left: 24, right: 24, top: 24,
           bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
         ),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.backgroundDarkElevated,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -891,10 +891,10 @@ class ChallengesScreen extends ConsumerWidget {
             TextField(
               controller: amountController,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(color: AppColors.textPrimaryDark),
+              style: const TextStyle(color: AppColors.textPrimaryDark),
               decoration: InputDecoration(
                 labelText: 'Amount (\$)',
-                labelStyle: TextStyle(color: AppColors.textTertiaryDark),
+                labelStyle: const TextStyle(color: AppColors.textTertiaryDark),
                 prefixText: '\$ ',
                 prefixStyle: TextStyle(color: _challengeColor(challenge.type)),
                 enabledBorder: OutlineInputBorder(
@@ -910,10 +910,10 @@ class ChallengesScreen extends ConsumerWidget {
             const SizedBox(height: 16),
             TextField(
               controller: noteController,
-              style: TextStyle(color: AppColors.textPrimaryDark),
+              style: const TextStyle(color: AppColors.textPrimaryDark),
               decoration: InputDecoration(
                 labelText: 'Note (optional)',
-                labelStyle: TextStyle(color: AppColors.textTertiaryDark),
+                labelStyle: const TextStyle(color: AppColors.textTertiaryDark),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(color: AppColors.glassBorder),
@@ -1000,9 +1000,9 @@ class ChallengesScreen extends ConsumerWidget {
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setSheetState) => Container(
           height: MediaQuery.of(ctx).size.height * 0.7,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.backgroundDarkElevated,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           padding: const EdgeInsets.all(24),
           child: SingleChildScrollView(
@@ -1043,7 +1043,7 @@ class ChallengesScreen extends ConsumerWidget {
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: isSelected ? color.withOpacity(0.15) : AppColors.backgroundDarkCard,
+                        color: isSelected ? color.withValues(alpha: 0.15) : AppColors.backgroundDarkCard,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: isSelected ? color : AppColors.glassBorder,
@@ -1055,7 +1055,7 @@ class ChallengesScreen extends ConsumerWidget {
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: color.withOpacity(0.2),
+                              color: color.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Icon(template['icon'] as IconData, color: color, size: 24),
@@ -1113,7 +1113,7 @@ class ChallengesScreen extends ConsumerWidget {
                   gradient: LinearGradient(
                     colors: [
                       challengeTemplates[selectedType]!['color'] as Color,
-                      (challengeTemplates[selectedType]!['color'] as Color).withOpacity(0.7),
+                      (challengeTemplates[selectedType]!['color'] as Color).withValues(alpha: 0.7),
                     ],
                   ),
                 ),

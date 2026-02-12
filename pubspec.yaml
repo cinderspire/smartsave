@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ^3.0.0
 
 dependencies:
   flutter:
@@ -34,6 +34,7 @@ flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/icon/app_icon.png"
+  remove_alpha_ios: true
   adaptive_icon_background: "#10B981"
   adaptive_icon_foreground: "assets/icon/app_icon.png"
 

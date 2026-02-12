@@ -33,7 +33,7 @@ class PremiumGate extends ConsumerWidget {
             onTap: () => PaywallScreen.show(context),
             child: Container(
               decoration: BoxDecoration(
-                color: AppColors.backgroundDark.withOpacity(0.6),
+                color: AppColors.backgroundDark.withValues(alpha: 0.6),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Center(
@@ -42,7 +42,7 @@ class PremiumGate extends ConsumerWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: AppColors.wealthGradient,
                         shape: BoxShape.circle,
                       ),

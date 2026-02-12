@@ -81,7 +81,7 @@ class GoalsScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.accentGold.withOpacity(0.3),
+            color: AppColors.accentGold.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -115,7 +115,7 @@ class GoalsScreen extends ConsumerWidget {
                 height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                 ),
                 child: Center(
                   child: Text(
@@ -131,7 +131,7 @@ class GoalsScreen extends ConsumerWidget {
             borderRadius: BorderRadius.circular(8),
             child: LinearProgressIndicator(
               value: (progress / 100).clamp(0.0, 1.0),
-              backgroundColor: Colors.white.withOpacity(0.2),
+              backgroundColor: Colors.white.withValues(alpha: 0.2),
               valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
               minHeight: 8,
             ),
@@ -173,7 +173,7 @@ class GoalsScreen extends ConsumerWidget {
         decoration: BoxDecoration(
           color: AppColors.backgroundDarkCard,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color.withOpacity(0.3)),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Column(
           children: [
@@ -182,7 +182,7 @@ class GoalsScreen extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.2),
+                    color: color.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Icon(icon, color: color, size: 28),
@@ -202,7 +202,7 @@ class GoalsScreen extends ConsumerWidget {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(Icons.calendar_today_rounded, size: 14, color: AppColors.textTertiaryDark),
+                          const Icon(Icons.calendar_today_rounded, size: 14, color: AppColors.textTertiaryDark),
                           const SizedBox(width: 4),
                           Text(
                             '${goal.daysLeft} days left',
@@ -298,7 +298,7 @@ class GoalsScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: AppColors.backgroundDarkCard,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primaryGreen.withOpacity(0.12)),
+        border: Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.12)),
       ),
       child: Center(
         child: Column(
@@ -315,14 +315,14 @@ class GoalsScreen extends ConsumerWidget {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          AppColors.accentGold.withOpacity(0.15),
-                          AppColors.primaryGreen.withOpacity(0.08),
+                          AppColors.accentGold.withValues(alpha: 0.15),
+                          AppColors.primaryGreen.withValues(alpha: 0.08),
                         ],
                       ),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(Icons.savings_rounded,
-                        color: AppColors.accentGold.withOpacity(0.7), size: 48),
+                        color: AppColors.accentGold.withValues(alpha: 0.7), size: 48),
                   ),
                 );
               },
@@ -406,9 +406,9 @@ class GoalsScreen extends ConsumerWidget {
           top: 24,
           bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
         ),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.backgroundDarkElevated,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -461,10 +461,10 @@ class GoalsScreen extends ConsumerWidget {
             TextField(
               controller: amountController,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(color: AppColors.textPrimaryDark),
+              style: const TextStyle(color: AppColors.textPrimaryDark),
               decoration: InputDecoration(
                 labelText: 'Add amount (\$)',
-                labelStyle: TextStyle(color: AppColors.textTertiaryDark),
+                labelStyle: const TextStyle(color: AppColors.textTertiaryDark),
                 prefixText: '\$ ',
                 prefixStyle: TextStyle(color: color),
                 enabledBorder: OutlineInputBorder(
@@ -488,11 +488,12 @@ class GoalsScreen extends ConsumerWidget {
                     final milestone = await ref.read(savingsGoalsProvider.notifier).addToGoal(goal.id, amount);
                     ref.read(savingsStreakProvider.notifier).recordSaving();
                     ref.read(monthlySavingsProvider.notifier).addToMonth(amount);
-                    Navigator.pop(ctx);
+                    if (ctx.mounted) Navigator.pop(ctx);
+                    if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Added \$${amount.toStringAsFixed(2)} to ${goal.name}!')),
                     );
-                    if (milestone != null) {
+                    if (milestone != null && context.mounted) {
                       _showMilestoneCelebration(context, milestone);
                     }
                   }
@@ -543,7 +544,7 @@ class GoalsScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: reached ? color.withOpacity(0.2) : AppColors.backgroundDarkCard,
+                color: reached ? color.withValues(alpha: 0.2) : AppColors.backgroundDarkCard,
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: reached ? color : AppColors.glassBorder,
@@ -604,7 +605,7 @@ class GoalsScreen extends ConsumerWidget {
           decoration: BoxDecoration(
             color: AppColors.backgroundDarkElevated,
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: milestoneColor.withOpacity(0.5), width: 2),
+            border: Border.all(color: milestoneColor.withValues(alpha: 0.5), width: 2),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -612,7 +613,7 @@ class GoalsScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: milestoneColor.withOpacity(0.2),
+                  color: milestoneColor.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(milestoneIcon, color: milestoneColor, size: 48),
@@ -683,9 +684,9 @@ class GoalsScreen extends ConsumerWidget {
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setSheetState) => Container(
           height: MediaQuery.of(ctx).size.height * 0.78,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.backgroundDarkElevated,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           padding: const EdgeInsets.all(24),
           child: SingleChildScrollView(
@@ -720,12 +721,12 @@ class GoalsScreen extends ConsumerWidget {
                 // Goal Name
                 TextField(
                   controller: nameController,
-                  style: TextStyle(color: AppColors.textPrimaryDark),
+                  style: const TextStyle(color: AppColors.textPrimaryDark),
                   decoration: InputDecoration(
                     labelText: 'Goal Name',
-                    labelStyle: TextStyle(color: AppColors.textTertiaryDark),
+                    labelStyle: const TextStyle(color: AppColors.textTertiaryDark),
                     hintText: 'e.g. Emergency Fund',
-                    hintStyle: TextStyle(color: AppColors.textTertiaryDark.withOpacity(0.5)),
+                    hintStyle: TextStyle(color: AppColors.textTertiaryDark.withValues(alpha: 0.5)),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(color: AppColors.glassBorder),
@@ -742,12 +743,12 @@ class GoalsScreen extends ConsumerWidget {
                 TextField(
                   controller: targetController,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  style: TextStyle(color: AppColors.textPrimaryDark),
+                  style: const TextStyle(color: AppColors.textPrimaryDark),
                   decoration: InputDecoration(
                     labelText: 'Target Amount',
-                    labelStyle: TextStyle(color: AppColors.textTertiaryDark),
+                    labelStyle: const TextStyle(color: AppColors.textTertiaryDark),
                     prefixText: '\$ ',
-                    prefixStyle: TextStyle(color: AppColors.primaryGreen),
+                    prefixStyle: const TextStyle(color: AppColors.primaryGreen),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(color: AppColors.glassBorder),
@@ -777,7 +778,7 @@ class GoalsScreen extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? _goalColor(cat['value'] as String).withOpacity(0.2)
+                              ? _goalColor(cat['value'] as String).withValues(alpha: 0.2)
                               : AppColors.backgroundDarkCard,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
@@ -824,7 +825,7 @@ class GoalsScreen extends ConsumerWidget {
                     activeTrackColor: AppColors.primaryGreen,
                     inactiveTrackColor: AppColors.backgroundDarkCard,
                     thumbColor: AppColors.primaryGreen,
-                    overlayColor: AppColors.primaryGreen.withOpacity(0.2),
+                    overlayColor: AppColors.primaryGreen.withValues(alpha: 0.2),
                   ),
                   child: Slider(
                     value: deadlineDays.toDouble(),

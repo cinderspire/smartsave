@@ -67,7 +67,7 @@ class JarsScreen extends ConsumerWidget {
                     TextButton.icon(
                       onPressed: () =>
                           _showDistributeSheet(context, ref, jars),
-                      icon: Icon(Icons.auto_awesome_rounded,
+                      icon: const Icon(Icons.auto_awesome_rounded,
                           color: AppColors.accentGold, size: 18),
                       label: Text('Auto-Split',
                           style: AppTextStyles.labelMedium
@@ -103,7 +103,7 @@ class JarsScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF06B6D4).withOpacity(0.3),
+            color: const Color(0xFF06B6D4).withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -133,7 +133,7 @@ class JarsScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Icon(Icons.account_balance_rounded,
@@ -226,7 +226,7 @@ class JarsScreen extends ConsumerWidget {
         decoration: BoxDecoration(
           color: AppColors.backgroundDarkCard,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color.withOpacity(0.3)),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Column(
           children: [
@@ -235,7 +235,7 @@ class JarsScreen extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.2),
+                    color: color.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Icon(icon, color: color, size: 28),
@@ -253,7 +253,7 @@ class JarsScreen extends ConsumerWidget {
                       if (jar.allocationPercent > 0)
                         Row(
                           children: [
-                            Icon(Icons.auto_awesome_rounded,
+                            const Icon(Icons.auto_awesome_rounded,
                                 size: 14, color: AppColors.textTertiaryDark),
                             const SizedBox(width: 4),
                             Text(
@@ -322,7 +322,7 @@ class JarsScreen extends ConsumerWidget {
       child: Center(
         child: Column(
           children: [
-            Icon(Icons.account_balance_rounded,
+            const Icon(Icons.account_balance_rounded,
                 color: AppColors.textTertiaryDark, size: 56),
             const SizedBox(height: 16),
             Text('No money jars yet',
@@ -397,10 +397,10 @@ class JarsScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       builder: (ctx) => Container(
         height: MediaQuery.of(ctx).size.height * 0.75,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.backgroundDarkElevated,
           borderRadius:
-              const BorderRadius.vertical(top: Radius.circular(24)),
+              BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
           children: [
@@ -425,7 +425,7 @@ class JarsScreen extends ConsumerWidget {
                       Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: color.withOpacity(0.2),
+                          color: color.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Icon(_jarIcon(jar.purpose),
@@ -481,11 +481,11 @@ class JarsScreen extends ConsumerWidget {
                     controller: amountController,
                     keyboardType: const TextInputType.numberWithOptions(
                         decimal: true),
-                    style: TextStyle(color: AppColors.textPrimaryDark),
+                    style: const TextStyle(color: AppColors.textPrimaryDark),
                     decoration: InputDecoration(
                       labelText: 'Amount (\$)',
                       labelStyle:
-                          TextStyle(color: AppColors.textTertiaryDark),
+                          const TextStyle(color: AppColors.textTertiaryDark),
                       prefixText: '\$ ',
                       prefixStyle: TextStyle(color: color),
                       enabledBorder: OutlineInputBorder(
@@ -686,10 +686,10 @@ class JarsScreen extends ConsumerWidget {
           top: 24,
           bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
         ),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.backgroundDarkElevated,
           borderRadius:
-              const BorderRadius.vertical(top: Radius.circular(24)),
+              BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -720,14 +720,14 @@ class JarsScreen extends ConsumerWidget {
               controller: amountController,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(color: AppColors.textPrimaryDark),
+              style: const TextStyle(color: AppColors.textPrimaryDark),
               decoration: InputDecoration(
                 labelText: 'Total Amount (\$)',
                 labelStyle:
-                    TextStyle(color: AppColors.textTertiaryDark),
+                    const TextStyle(color: AppColors.textTertiaryDark),
                 prefixText: '\$ ',
                 prefixStyle:
-                    TextStyle(color: AppColors.primaryGreen),
+                    const TextStyle(color: AppColors.primaryGreen),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide:
@@ -828,9 +828,9 @@ class JarsScreen extends ConsumerWidget {
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setSheetState) => Container(
           height: MediaQuery.of(ctx).size.height * 0.78,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.backgroundDarkElevated,
-            borderRadius: const BorderRadius.vertical(
+            borderRadius: BorderRadius.vertical(
                 top: Radius.circular(24)),
           ),
           padding: const EdgeInsets.all(24),
@@ -862,15 +862,15 @@ class JarsScreen extends ConsumerWidget {
                 TextField(
                   controller: nameController,
                   style:
-                      TextStyle(color: AppColors.textPrimaryDark),
+                      const TextStyle(color: AppColors.textPrimaryDark),
                   decoration: InputDecoration(
                     labelText: 'Jar Name',
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                         color: AppColors.textTertiaryDark),
                     hintText: 'e.g. Emergency Fund',
                     hintStyle: TextStyle(
                         color: AppColors.textTertiaryDark
-                            .withOpacity(0.5)),
+                            .withValues(alpha: 0.5)),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
@@ -890,13 +890,13 @@ class JarsScreen extends ConsumerWidget {
                       const TextInputType.numberWithOptions(
                           decimal: true),
                   style:
-                      TextStyle(color: AppColors.textPrimaryDark),
+                      const TextStyle(color: AppColors.textPrimaryDark),
                   decoration: InputDecoration(
                     labelText: 'Target Amount (optional)',
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                         color: AppColors.textTertiaryDark),
                     prefixText: '\$ ',
-                    prefixStyle: TextStyle(
+                    prefixStyle: const TextStyle(
                         color: AppColors.primaryGreen),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -917,13 +917,13 @@ class JarsScreen extends ConsumerWidget {
                       const TextInputType.numberWithOptions(
                           decimal: true),
                   style:
-                      TextStyle(color: AppColors.textPrimaryDark),
+                      const TextStyle(color: AppColors.textPrimaryDark),
                   decoration: InputDecoration(
                     labelText: 'Allocation % (optional)',
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                         color: AppColors.textTertiaryDark),
                     suffixText: '%',
-                    suffixStyle: TextStyle(
+                    suffixStyle: const TextStyle(
                         color: AppColors.textTertiaryDark),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -959,7 +959,7 @@ class JarsScreen extends ConsumerWidget {
                             horizontal: 16, vertical: 10),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? optColor.withOpacity(0.2)
+                              ? optColor.withValues(alpha: 0.2)
                               : AppColors.backgroundDarkCard,
                           borderRadius:
                               BorderRadius.circular(12),

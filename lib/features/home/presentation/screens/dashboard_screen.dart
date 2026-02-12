@@ -155,7 +155,7 @@ class DashboardScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryGreen.withOpacity(0.3),
+            color: AppColors.primaryGreen.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -166,7 +166,7 @@ class DashboardScreen extends ConsumerWidget {
         children: [
           Text(
             'Total Savings',
-            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),
+            style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 14),
           ),
           const SizedBox(height: 8),
           TweenAnimationBuilder<double>(
@@ -191,7 +191,7 @@ class DashboardScreen extends ConsumerWidget {
               const SizedBox(width: 4),
               Text(
                 '+\$${weeklyRoundUps.toStringAsFixed(2)} round-ups this week',
-                style: TextStyle(color: Colors.white.withOpacity(0.9)),
+                style: TextStyle(color: Colors.white.withValues(alpha: 0.9)),
               ),
             ],
           ),
@@ -224,7 +224,7 @@ class DashboardScreen extends ConsumerWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [streakGlow, streakGlow.withOpacity(0.7)],
+          colors: [streakGlow, streakGlow.withValues(alpha: 0.7)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -232,7 +232,7 @@ class DashboardScreen extends ConsumerWidget {
         boxShadow: streak >= 7
             ? [
                 BoxShadow(
-                  color: streakGlow.withOpacity(0.4),
+                  color: streakGlow.withValues(alpha: 0.4),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -249,7 +249,7 @@ class DashboardScreen extends ConsumerWidget {
           ),
           Text(
             streakLabel,
-            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 11),
+            style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 11),
           ),
         ],
       ),
@@ -263,7 +263,7 @@ class DashboardScreen extends ConsumerWidget {
       children: [
         Row(
           children: [
-            Icon(Icons.lightbulb_rounded, color: AppColors.accentGold, size: 22),
+            const Icon(Icons.lightbulb_rounded, color: AppColors.accentGold, size: 22),
             const SizedBox(width: 8),
             Text(
               'Smart Tips',
@@ -290,7 +290,7 @@ class DashboardScreen extends ConsumerWidget {
                 decoration: BoxDecoration(
                   color: AppColors.backgroundDarkCard,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: tip.color.withOpacity(0.3)),
+                  border: Border.all(color: tip.color.withValues(alpha: 0.3)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +300,7 @@ class DashboardScreen extends ConsumerWidget {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: tip.color.withOpacity(0.2),
+                            color: tip.color.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Icon(tip.icon, color: tip.color, size: 20),
@@ -320,7 +320,7 @@ class DashboardScreen extends ConsumerWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: tip.color.withOpacity(0.15),
+                            color: tip.color.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -367,8 +367,8 @@ class DashboardScreen extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.account_balance_rounded,
-                      color: const Color(0xFF06B6D4), size: 22),
+                  const Icon(Icons.account_balance_rounded,
+                      color: Color(0xFF06B6D4), size: 22),
                   const SizedBox(width: 8),
                   Text(
                     'Money Jars',
@@ -398,7 +398,7 @@ class DashboardScreen extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.2),
+                      color: color.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(_jarIcon(jar.purpose), color: color, size: 18),
@@ -485,7 +485,7 @@ class DashboardScreen extends ConsumerWidget {
             height: 140,
             child: LineChart(
               LineChartData(
-                gridData: FlGridData(show: false),
+                gridData: const FlGridData(show: false),
                 titlesData: FlTitlesData(
                   topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -535,8 +535,8 @@ class DashboardScreen extends ConsumerWidget {
                       show: true,
                       gradient: LinearGradient(
                         colors: [
-                          AppColors.primaryGreen.withOpacity(0.15),
-                          AppColors.primaryBlue.withOpacity(0.05),
+                          AppColors.primaryGreen.withValues(alpha: 0.15),
+                          AppColors.primaryBlue.withValues(alpha: 0.05),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -646,7 +646,7 @@ class DashboardScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
+                  color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: color, size: 24),
@@ -677,7 +677,7 @@ class DashboardScreen extends ConsumerWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.calendar_today_rounded,
+                          const Icon(Icons.calendar_today_rounded,
                               size: 10, color: AppColors.textTertiaryDark),
                           const SizedBox(width: 3),
                           Text(
@@ -803,7 +803,7 @@ class DashboardScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: AppColors.backgroundDarkCard,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primaryGreen.withOpacity(0.12)),
+        border: Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.12)),
       ),
       child: Center(
         child: Column(
@@ -820,13 +820,13 @@ class DashboardScreen extends ConsumerWidget {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          AppColors.primaryGreen.withOpacity(0.12),
-                          AppColors.primaryBlue.withOpacity(0.06),
+                          AppColors.primaryGreen.withValues(alpha: 0.12),
+                          AppColors.primaryBlue.withValues(alpha: 0.06),
                         ],
                       ),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.flag_rounded, color: AppColors.primaryGreen.withOpacity(0.6), size: 44),
+                    child: Icon(Icons.flag_rounded, color: AppColors.primaryGreen.withValues(alpha: 0.6), size: 44),
                   ),
                 );
               },
@@ -884,7 +884,7 @@ class DashboardScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
+              color: color.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: color, size: 20),
@@ -960,9 +960,9 @@ class DashboardScreen extends ConsumerWidget {
             top: 24,
             bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.backgroundDarkElevated,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -987,11 +987,11 @@ class DashboardScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               DropdownButtonFormField<String>(
-                value: selectedGoalId,
+                initialValue: selectedGoalId,
                 dropdownColor: AppColors.backgroundDarkElevated,
                 decoration: InputDecoration(
                   labelText: 'Select Goal',
-                  labelStyle: TextStyle(color: AppColors.textTertiaryDark),
+                  labelStyle: const TextStyle(color: AppColors.textTertiaryDark),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: AppColors.glassBorder),
@@ -1003,7 +1003,7 @@ class DashboardScreen extends ConsumerWidget {
                 ),
                 items: goals.map((g) => DropdownMenuItem(
                   value: g.id,
-                  child: Text(g.name, style: TextStyle(color: AppColors.textPrimaryDark)),
+                  child: Text(g.name, style: const TextStyle(color: AppColors.textPrimaryDark)),
                 )).toList(),
                 onChanged: (v) => setSheetState(() => selectedGoalId = v),
               ),
@@ -1011,12 +1011,12 @@ class DashboardScreen extends ConsumerWidget {
               TextField(
                 controller: amountController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                style: TextStyle(color: AppColors.textPrimaryDark),
+                style: const TextStyle(color: AppColors.textPrimaryDark),
                 decoration: InputDecoration(
                   labelText: 'Amount (\$)',
-                  labelStyle: TextStyle(color: AppColors.textTertiaryDark),
+                  labelStyle: const TextStyle(color: AppColors.textTertiaryDark),
                   prefixText: '\$ ',
-                  prefixStyle: TextStyle(color: AppColors.primaryGreen),
+                  prefixStyle: const TextStyle(color: AppColors.primaryGreen),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: AppColors.glassBorder),
@@ -1038,11 +1038,12 @@ class DashboardScreen extends ConsumerWidget {
                       final milestone = await ref.read(savingsGoalsProvider.notifier).addToGoal(selectedGoalId!, amount);
                       ref.read(savingsStreakProvider.notifier).recordSaving();
                       ref.read(monthlySavingsProvider.notifier).addToMonth(amount);
-                      Navigator.pop(ctx);
+                      if (ctx.mounted) Navigator.pop(ctx);
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Added \$${amount.toStringAsFixed(2)} to goal!')),
                       );
-                      if (milestone != null) {
+                      if (milestone != null && context.mounted) {
                         _showMilestoneCelebration(context, milestone);
                       }
                     }
@@ -1095,7 +1096,7 @@ class DashboardScreen extends ConsumerWidget {
           decoration: BoxDecoration(
             color: AppColors.backgroundDarkElevated,
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: milestoneColor.withOpacity(0.5), width: 2),
+            border: Border.all(color: milestoneColor.withValues(alpha: 0.5), width: 2),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -1103,7 +1104,7 @@ class DashboardScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: milestoneColor.withOpacity(0.2),
+                  color: milestoneColor.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(milestoneIcon, color: milestoneColor, size: 48),
@@ -1167,9 +1168,9 @@ class DashboardScreen extends ConsumerWidget {
           top: 24,
           bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
         ),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.backgroundDarkElevated,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -1200,12 +1201,12 @@ class DashboardScreen extends ConsumerWidget {
             const SizedBox(height: 20),
             TextField(
               controller: merchantController,
-              style: TextStyle(color: AppColors.textPrimaryDark),
+              style: const TextStyle(color: AppColors.textPrimaryDark),
               decoration: InputDecoration(
                 labelText: 'Merchant',
-                labelStyle: TextStyle(color: AppColors.textTertiaryDark),
+                labelStyle: const TextStyle(color: AppColors.textTertiaryDark),
                 hintText: 'e.g. Coffee Shop',
-                hintStyle: TextStyle(color: AppColors.textTertiaryDark.withOpacity(0.5)),
+                hintStyle: TextStyle(color: AppColors.textTertiaryDark.withValues(alpha: 0.5)),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(color: AppColors.glassBorder),
@@ -1220,12 +1221,12 @@ class DashboardScreen extends ConsumerWidget {
             TextField(
               controller: amountController,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(color: AppColors.textPrimaryDark),
+              style: const TextStyle(color: AppColors.textPrimaryDark),
               decoration: InputDecoration(
                 labelText: 'Purchase Amount (\$)',
-                labelStyle: TextStyle(color: AppColors.textTertiaryDark),
+                labelStyle: const TextStyle(color: AppColors.textTertiaryDark),
                 prefixText: '\$ ',
-                prefixStyle: TextStyle(color: AppColors.accentGold),
+                prefixStyle: const TextStyle(color: AppColors.accentGold),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(color: AppColors.glassBorder),
@@ -1247,7 +1248,8 @@ class DashboardScreen extends ConsumerWidget {
                   if (amount != null && amount > 0 && merchant.isNotEmpty) {
                     final txn = await ref.read(roundUpProvider.notifier).simulatePurchase(merchant, amount);
                     ref.read(savingsStreakProvider.notifier).recordSaving();
-                    Navigator.pop(ctx);
+                    if (ctx.mounted) Navigator.pop(ctx);
+                    if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
@@ -1342,7 +1344,7 @@ class _QuickActionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.15),
+              color: Colors.black.withValues(alpha: 0.15),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),

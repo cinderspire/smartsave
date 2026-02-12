@@ -175,7 +175,7 @@ class StatsScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: color, size: 22),
@@ -296,8 +296,8 @@ class StatsScreen extends ConsumerWidget {
                             ? AppColors.wealthGradient
                             : LinearGradient(
                                 colors: [
-                                  AppColors.primaryBlue.withOpacity(0.5),
-                                  AppColors.primaryBlue.withOpacity(0.8),
+                                  AppColors.primaryBlue.withValues(alpha: 0.5),
+                                  AppColors.primaryBlue.withValues(alpha: 0.8),
                                 ],
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
@@ -361,7 +361,7 @@ class StatsScreen extends ConsumerWidget {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.accentGold.withOpacity(0.1),
+                    color: AppColors.accentGold.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Column(
@@ -384,7 +384,7 @@ class StatsScreen extends ConsumerWidget {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryGreen.withOpacity(0.1),
+                    color: AppColors.primaryGreen.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Column(
@@ -480,7 +480,7 @@ class StatsScreen extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -498,7 +498,7 @@ class StatsScreen extends ConsumerWidget {
               style: AppTextStyles.titleMedium.copyWith(color: color, fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 8),
-            Icon(Icons.edit_rounded, color: AppColors.textTertiaryDark, size: 18),
+            const Icon(Icons.edit_rounded, color: AppColors.textTertiaryDark, size: 18),
           ],
         ),
       ),
@@ -517,9 +517,9 @@ class StatsScreen extends ConsumerWidget {
           left: 24, right: 24, top: 24,
           bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
         ),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.backgroundDarkElevated,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -546,12 +546,12 @@ class StatsScreen extends ConsumerWidget {
             TextField(
               controller: controller,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(color: AppColors.textPrimaryDark),
+              style: const TextStyle(color: AppColors.textPrimaryDark),
               decoration: InputDecoration(
                 labelText: 'Amount (\$)',
-                labelStyle: TextStyle(color: AppColors.textTertiaryDark),
+                labelStyle: const TextStyle(color: AppColors.textTertiaryDark),
                 prefixText: '\$ ',
-                prefixStyle: TextStyle(color: AppColors.primaryGreen),
+                prefixStyle: const TextStyle(color: AppColors.primaryGreen),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(color: AppColors.glassBorder),
@@ -832,7 +832,7 @@ class StatsScreen extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: (insight['color'] as Color).withOpacity(0.15),
+                    color: (insight['color'] as Color).withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(insight['icon'] as IconData, color: insight['color'] as Color, size: 20),

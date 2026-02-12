@@ -20,6 +20,10 @@ class RevenueCatService {
   static final instance = RevenueCatService._();
 
   bool _initialized = false;
+  bool _demoMode = false;
+
+  /// Whether running with placeholder keys (all features unlocked).
+  bool get isDemoMode => _demoMode;
 
   /// Call once at app start.
   Future<void> init() async {
@@ -27,7 +31,8 @@ class RevenueCatService {
     try {
       final key = Platform.isIOS ? _rcAppleApiKey : _rcGoogleApiKey;
       if (key.contains('REPLACE') || key.contains('your_') || key.isEmpty) {
-        debugPrint('[RevenueCat] Skipping — placeholder API key');
+        debugPrint('[RevenueCat] Placeholder API key detected → demo mode (premium unlocked)');
+        _demoMode = true;
         return;
       }
       await Purchases.setLogLevel(LogLevel.debug);
@@ -48,6 +53,7 @@ class RevenueCatService {
 
   /// Returns `true` when the user has an active premium entitlement.
   Future<bool> isPremium() async {
+    if (_demoMode) return true;
     if (!_initialized) return false;
     try {
       final info = await Purchases.getCustomerInfo();
@@ -95,7 +101,7 @@ class RevenueCatService {
 
 /// Holds current premium status. Starts `false`, updated after init.
 class PremiumNotifier extends StateNotifier<bool> {
-  PremiumNotifier() : super(kDebugMode ? true : false) {
+  PremiumNotifier() : super(kDebugMode || RevenueCatService.instance.isDemoMode) {
     _init();
   }
 

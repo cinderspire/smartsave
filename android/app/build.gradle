@@ -48,7 +48,7 @@ android {
 
     defaultConfig {
         applicationId "com.cinderspire.smartsave"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 24
         targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

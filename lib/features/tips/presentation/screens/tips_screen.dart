@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -117,7 +116,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
       children: [
         Row(
           children: [
-            Icon(Icons.lightbulb_rounded,
+            const Icon(Icons.lightbulb_rounded,
                 color: AppColors.accentGold, size: 24),
             const SizedBox(width: 8),
             Text(
@@ -143,14 +142,14 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      tip.color.withOpacity(0.2),
-                      tip.color.withOpacity(0.05),
+                      tip.color.withValues(alpha: 0.2),
+                      tip.color.withValues(alpha: 0.05),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: tip.color.withOpacity(0.3)),
+                  border: Border.all(color: tip.color.withValues(alpha: 0.3)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +159,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: tip.color.withOpacity(0.2),
+                            color: tip.color.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(tip.icon, color: tip.color, size: 24),
@@ -179,7 +178,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
-                            color: tip.color.withOpacity(0.15),
+                            color: tip.color.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -300,7 +299,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
       children: [
         Row(
           children: [
-            Icon(Icons.school_rounded, color: AppColors.primaryBlue, size: 24),
+            const Icon(Icons.school_rounded, color: AppColors.primaryBlue, size: 24),
             const SizedBox(width: 8),
             Text(
               'Financial Literacy',
@@ -319,7 +318,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
                 color: AppColors.backgroundDarkCard,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                    color: (snippet['color'] as Color).withOpacity(0.2)),
+                    color: (snippet['color'] as Color).withValues(alpha: 0.2)),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,7 +327,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color:
-                          (snippet['color'] as Color).withOpacity(0.15),
+                          (snippet['color'] as Color).withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(snippet['icon'] as IconData,
@@ -374,7 +373,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
       children: [
         Row(
           children: [
-            Icon(Icons.calculate_rounded,
+            const Icon(Icons.calculate_rounded,
                 color: AppColors.primaryGreen, size: 24),
             const SizedBox(width: 8),
             Text(
@@ -449,7 +448,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
                   activeTrackColor: AppColors.primaryGreen,
                   inactiveTrackColor: AppColors.backgroundDarkElevated,
                   thumbColor: AppColors.primaryGreen,
-                  overlayColor: AppColors.primaryGreen.withOpacity(0.2),
+                  overlayColor: AppColors.primaryGreen.withValues(alpha: 0.2),
                 ),
                 child: Slider(
                   value: _years.toDouble(),
@@ -467,13 +466,13 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.primaryGreen.withOpacity(0.15),
-                      AppColors.primaryBlue.withOpacity(0.1),
+                      AppColors.primaryGreen.withValues(alpha: 0.15),
+                      AppColors.primaryBlue.withValues(alpha: 0.1),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(16),
                   border:
-                      Border.all(color: AppColors.primaryGreen.withOpacity(0.3)),
+                      Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.3)),
                 ),
                 child: Column(
                   children: [
@@ -563,8 +562,8 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
             decoration: InputDecoration(
               prefixText: prefix == '\$' ? '\$ ' : null,
               suffixText: prefix == '%' ? '%' : null,
-              prefixStyle: TextStyle(color: AppColors.primaryGreen),
-              suffixStyle: TextStyle(color: AppColors.primaryGreen),
+              prefixStyle: const TextStyle(color: AppColors.primaryGreen),
+              suffixStyle: const TextStyle(color: AppColors.primaryGreen),
               isDense: true,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -599,8 +598,8 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
       children: [
         Row(
           children: [
-            Icon(Icons.auto_stories_rounded,
-                color: const Color(0xFFEC4899), size: 24),
+            const Icon(Icons.auto_stories_rounded,
+                color: Color(0xFFEC4899), size: 24),
             const SizedBox(width: 8),
             Text(
               'Did You Know?',
@@ -629,7 +628,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
             decoration: BoxDecoration(
               color: AppColors.backgroundDarkCard,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: color.withOpacity(0.15)),
+              border: Border.all(color: color.withValues(alpha: 0.15)),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -638,7 +637,7 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
                   width: 28,
                   height: 28,
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.2),
+                    color: color.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Center(
