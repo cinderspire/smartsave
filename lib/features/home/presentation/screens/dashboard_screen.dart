@@ -3,8 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/services/gemini_service.dart';
+import '../../../../core/config/feature_flags.dart';
+import '../../../../shared/widgets/ai_command_bar.dart';
+import '../../../setup/presentation/screens/ai_setup_screen.dart';
+import '../../../advisor/presentation/screens/ai_advisor_screen.dart';
 import '../../../../shared/widgets/glassmorphic_container.dart';
 import '../../../goals/data/models/savings_goal.dart';
 import '../../../goals/data/providers/savings_provider.dart';
@@ -12,17 +18,58 @@ import '../../../goals/data/providers/smart_tips_provider.dart';
 import '../../../goals/data/providers/money_jar_provider.dart';
 import '../../../goals/data/models/money_jar.dart';
 
-class DashboardScreen extends ConsumerWidget {
+class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends ConsumerState<DashboardScreen> {
+  String? _aiInsight;
+  bool _aiInsightLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAiInsight();
+  }
+
+  Future<void> _loadAiInsight() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final cached = prefs.getString('ai_insight');
+      final cachedDate = prefs.getString('ai_insight_date');
+      final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+      if (cached != null && cachedDate == today) {
+        if (mounted) setState(() { _aiInsight = cached; _aiInsightLoading = false; });
+        return;
+      }
+
+      final insight = await GeminiService().generate(
+        'Give a short, encouraging financial insight or money tip in 1-2 sentences. Be specific and motivational.',
+        systemInstruction: 'You are a friendly financial coach. Keep responses under 30 words.',
+      );
+
+      await prefs.setString('ai_insight', insight);
+      await prefs.setString('ai_insight_date', today);
+      if (mounted) setState(() { _aiInsight = insight; _aiInsightLoading = false; });
+    } catch (e) {
+      debugPrint('AI Insight error: $e');
+      if (mounted) setState(() { _aiInsightLoading = false; });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ref = this.ref;
     final goals = ref.watch(savingsGoalsProvider);
     final totalSaved = ref.watch(totalSavedProvider);
     final totalRoundUps = ref.watch(totalRoundUpsProvider);
     final recentActivity = ref.watch(recentActivityProvider);
     final roundUps = ref.watch(roundUpProvider);
-    final streak = ref.watch(savingsStreakProvider);
+    // streak removed — unnecessary gamification
     final monthlySavings = ref.watch(monthlySavingsProvider);
     final smartTips = ref.watch(smartTipsProvider);
     final jars = ref.watch(moneyJarsProvider);
@@ -47,17 +94,56 @@ class DashboardScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // AI Insight Card
+            if (FeatureFlags.aiInsight)
+            _buildAiInsightCard(),
+            const SizedBox(height: 16),
+
+            // AI Command Bar — type anything, AI does it
+            const AiCommandBar(),
+            const SizedBox(height: 12),
+
+            // AI Setup — personalized setup with 2 options or full custom
+            GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AiSetupScreen())),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [const Color(0xFF7C3AED).withValues(alpha: 0.15), AppColors.primaryGreen.withValues(alpha: 0.1)],
+                  ),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: const Color(0xFF7C3AED).withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: [
+                    const Text('🎯', style: TextStyle(fontSize: 20)),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('AI Setup', style: AppTextStyles.labelMedium.copyWith(color: const Color(0xFF7C3AED), fontWeight: FontWeight.bold)),
+                          Text('Tell me your goal → I\'ll create a plan', style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondaryDark)),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.arrow_forward_ios, color: AppColors.textTertiaryDark, size: 14),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
             // Total Balance Card
             _buildTotalBalanceCard(totalSaved, weeklyRoundUps),
             const SizedBox(height: 20),
 
-            // Streak + Quick Actions Row
+            // Quick Actions (feature-gated)
+            if (FeatureFlags.deposit || FeatureFlags.roundUp)
             Row(
               children: [
-                Expanded(
-                  child: _buildStreakCard(streak.currentStreak, streak.bestStreak),
-                ),
-                const SizedBox(width: 12),
                 Expanded(
                   child: _QuickActionCard(
                     icon: Icons.add_circle_outline,
@@ -80,29 +166,53 @@ class DashboardScreen extends ConsumerWidget {
 
             const SizedBox(height: 24),
 
+            // AI Advisor — shopping & spending advice
+            GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AiAdvisorScreen())),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.orange.withValues(alpha: 0.15), Colors.amber.withValues(alpha: 0.08)],
+                  ),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: [
+                    const Text('🛒', style: TextStyle(fontSize: 24)),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('AI Advisor', style: AppTextStyles.labelMedium.copyWith(color: Colors.orange, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 2),
+                          Text('Shopping? Get smart options & savings tips', style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondaryDark)),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.arrow_forward_ios, color: AppColors.textTertiaryDark, size: 14),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
             // Smart Tips Section
-            if (smartTips.isNotEmpty) ...[
+            if (FeatureFlags.aiSmartTips && smartTips.isNotEmpty) ...[
               _buildSmartTipsSection(smartTips),
               const SizedBox(height: 24),
             ],
 
             // Money Jars Quick View
-            if (jars.isNotEmpty) ...[
+            if (FeatureFlags.moneyJars && jars.isNotEmpty) ...[
               _buildMoneyJarsQuickView(jars, totalJarBalance),
               const SizedBox(height: 24),
             ],
 
-            // Monthly Savings Mini Chart
-            _buildMiniMonthlyChart(monthlySavings),
-
-            const SizedBox(height: 24),
-
-            // Round-ups Summary
-            _buildRoundUpsSummary(totalRoundUps, roundUps.length),
-
-            const SizedBox(height: 24),
-
-            // Goals Progress with Projected Completion
+            // Goals Progress
             Text(
               'Goals Progress',
               style: AppTextStyles.headlineSmall.copyWith(
@@ -143,6 +253,80 @@ class DashboardScreen extends ConsumerWidget {
             const SizedBox(height: 100),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildAiInsightCard() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.backgroundDarkCard,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          width: 1.5,
+          color: Colors.transparent,
+        ),
+        gradient: const LinearGradient(
+          colors: [
+            AppColors.backgroundDarkCard,
+            AppColors.backgroundDarkCard,
+          ],
+        ),
+      ),
+      foregroundDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          width: 1.5,
+          color: AppColors.primaryGreen.withValues(alpha: 0.4),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              gradient: AppColors.wealthGradient,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Text('✨', style: TextStyle(fontSize: 18)),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'AI Insight',
+                  style: AppTextStyles.labelMedium.copyWith(
+                    color: AppColors.primaryGreen,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                if (_aiInsightLoading)
+                  Container(
+                    height: 12,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundDarkElevated,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                  )
+                else
+                  Text(
+                    _aiInsight ?? 'Save a little every day — small steps lead to big results!',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textSecondaryDark,
+                      height: 1.4,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

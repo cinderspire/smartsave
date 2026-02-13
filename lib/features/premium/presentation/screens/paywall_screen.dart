@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/services/revenue_cat_service.dart';
@@ -113,6 +114,31 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 style: AppTextStyles.bodySmall.copyWith(color: AppColors.textTertiaryDark),
                 textAlign: TextAlign.center,
               ),
+              const SizedBox(height: 16),
+
+              // Legal links
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => launchUrl(Uri.parse('https://playtools.top/privacy-policy.html'), mode: LaunchMode.externalApplication),
+                    child: Text('Privacy Policy',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textTertiaryDark,
+                          decoration: TextDecoration.underline,
+                        )),
+                  ),
+                  Text('  •  ', style: AppTextStyles.bodySmall.copyWith(color: AppColors.textTertiaryDark)),
+                  GestureDetector(
+                    onTap: () => launchUrl(Uri.parse('https://playtools.top/terms-of-service.html'), mode: LaunchMode.externalApplication),
+                    child: Text('Terms of Service',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textTertiaryDark,
+                          decoration: TextDecoration.underline,
+                        )),
+                  ),
+                ],
+              ),
               const SizedBox(height: 24),
             ],
           ),
@@ -206,6 +232,21 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   }
 
   Widget _buildFallbackPurchaseButton() {
+    // If RevenueCat is in demo mode (placeholder keys), allow demo unlock silently.
+    // In production (real keys but offerings failed to load), show an error message.
+    if (!RevenueCatService.instance.isDemoMode) {
+      return Column(
+        children: [
+          Text(
+            'Subscriptions are temporarily unavailable.\nPlease try again later.',
+            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textTertiaryDark),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    }
+
+    // Demo mode only — auto-unlock for testing
     return Column(
       children: [
         SizedBox(

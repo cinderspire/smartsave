@@ -2,8 +2,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/services/gemini_service.dart';
 import '../../../../shared/widgets/glassmorphic_container.dart';
 import '../../../goals/data/providers/smart_tips_provider.dart';
 
@@ -15,6 +17,42 @@ class TipsScreen extends ConsumerStatefulWidget {
 }
 
 class _TipsScreenState extends ConsumerState<TipsScreen> {
+  // AI Tip of the Day
+  String? _aiTip;
+  bool _aiTipLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAiTip();
+  }
+
+  Future<void> _loadAiTip() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final cachedTip = prefs.getString('ai_tip_of_day');
+      final cachedDate = prefs.getString('ai_tip_date');
+      final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+      if (cachedTip != null && cachedDate == today) {
+        if (mounted) setState(() { _aiTip = cachedTip; _aiTipLoading = false; });
+        return;
+      }
+
+      final tip = await GeminiService().generate(
+        'Give one unique, practical money-saving tip for today. Be specific and actionable. Keep it under 80 words. Do not use bullet points.',
+        systemInstruction: 'You are a friendly financial advisor. Give fresh, creative savings tips.',
+      );
+
+      await prefs.setString('ai_tip_of_day', tip);
+      await prefs.setString('ai_tip_date', today);
+      if (mounted) setState(() { _aiTip = tip; _aiTipLoading = false; });
+    } catch (e) {
+      debugPrint('AI Tip error: $e');
+      if (mounted) setState(() { _aiTipLoading = false; });
+    }
+  }
+
   // Compound interest calculator state
   double _principal = 1000;
   double _monthlyContribution = 100;
@@ -81,6 +119,10 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // AI Tip of the Day
+                _buildAiTipOfDay(),
+                const SizedBox(height: 24),
+
                 // Savings Tips Carousel
                 _buildTipsCarousel(smartTips),
                 const SizedBox(height: 24),
@@ -101,6 +143,76 @@ class _TipsScreenState extends ConsumerState<TipsScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildAiTipOfDay() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppColors.primaryGreen.withValues(alpha: 0.15),
+            AppColors.primaryBlue.withValues(alpha: 0.1),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.primaryGreen.withValues(alpha: 0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text('✨', style: TextStyle(fontSize: 20)),
+              const SizedBox(width: 8),
+              Text(
+                'AI Tip of the Day',
+                style: AppTextStyles.headlineSmall.copyWith(
+                  color: AppColors.primaryGreen,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (_aiTipLoading)
+            _buildShimmer()
+          else if (_aiTip != null)
+            Text(
+              _aiTip!,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textPrimaryDark,
+                height: 1.6,
+              ),
+            )
+          else
+            Text(
+              'Check back later for your personalized AI tip!',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSecondaryDark,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShimmer() {
+    return Column(
+      children: List.generate(3, (i) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          height: 14,
+          width: i == 2 ? 180 : double.infinity,
+          decoration: BoxDecoration(
+            color: AppColors.backgroundDarkElevated,
+            borderRadius: BorderRadius.circular(7),
+          ),
+        );
+      }),
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/glassmorphic_container.dart';
@@ -625,6 +626,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           _buildDivider(),
           _buildSettingsItem(Icons.help_outline_rounded, 'Help & Support',
               onTap: () {}),
+          _buildDivider(),
+          _buildSettingsItem(Icons.privacy_tip_rounded, 'Privacy Policy',
+              onTap: () => launchUrl(Uri.parse('https://playtools.top/privacy-policy.html'), mode: LaunchMode.externalApplication)),
+          _buildDivider(),
+          _buildSettingsItem(Icons.description_rounded, 'Terms of Service',
+              onTap: () => launchUrl(Uri.parse('https://playtools.top/terms-of-service.html'), mode: LaunchMode.externalApplication)),
           _buildDivider(),
           _buildSettingsItem(Icons.info_outline_rounded, 'About Rebecca',
               onTap: () {

@@ -5,7 +5,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// RevenueCat API keys — replace with your real keys before production.
-const _rcAppleApiKey = 'appl_REPLACE_WITH_YOUR_APPLE_API_KEY';
+const _rcAppleApiKey = 'appl_trUASuGyJQxOOLGMackrYXKQAfS';
 const _rcGoogleApiKey = 'goog_REPLACE_WITH_YOUR_GOOGLE_API_KEY';
 
 /// Entitlement identifier configured in RevenueCat dashboard.

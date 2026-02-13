@@ -2,14 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'core/theme/app_colors.dart';
 import 'core/services/revenue_cat_service.dart';
+import 'core/services/remote_config_service.dart';
 import 'features/goals/data/providers/settings_provider.dart';
 import 'features/home/presentation/screens/main_navigation_screen.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase + Remote Config (graceful — app works without it).
+  try {
+    await Firebase.initializeApp();
+    await RemoteConfigService().init();
+  } catch (e) {
+    debugPrint('Firebase init failed: $e');
+  }
 
   final prefs = await SharedPreferences.getInstance();
   final onboardingComplete = prefs.getBool('onboarding_complete') ?? true; // Demo mode: skip onboarding

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// SmartSave Financial App Color Palette - Neon Fintech with Corporate Blend
+/// AI SmartSave Financial App Color Palette - Neon Fintech with Corporate Blend
 class AppColors {
   AppColors._();
 

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/config/feature_flags.dart';
 import '../../../../shared/widgets/glassmorphic_container.dart';
 import '../../../goals/presentation/screens/goals_screen.dart';
 import '../../../jars/presentation/screens/jars_screen.dart';
 import '../../../stats/presentation/screens/stats_screen.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
+import '../../../coach/presentation/screens/coach_screen.dart';
+import '../../../expenses/presentation/screens/expenses_screen.dart';
 import 'dashboard_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -17,35 +20,33 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
-    const DashboardScreen(),
-    const GoalsScreen(),
-    const JarsScreen(),
-    const StatsScreen(),
-    const ProfileScreen(),
-  ];
-
-  final List<Map<String, dynamic>> _navItems = [
-    {'icon': Icons.home_rounded, 'label': 'Home'},
-    {'icon': Icons.flag_rounded, 'label': 'Goals'},
-    {'icon': Icons.account_balance_rounded, 'label': 'Jars'},
-    {'icon': Icons.bar_chart_rounded, 'label': 'Stats'},
-    {'icon': Icons.settings_rounded, 'label': 'Settings'},
-  ];
+  List<_NavTab> get _tabs {
+    final tabs = <_NavTab>[
+      _NavTab(Icons.home_rounded, 'Home', const DashboardScreen(), true),
+      _NavTab(Icons.receipt_long_rounded, 'Expenses', const ExpensesScreen(), FeatureFlags.expenses),
+      _NavTab(Icons.account_balance_rounded, 'Jars', const JarsScreen(), FeatureFlags.moneyJars),
+      _NavTab(Icons.psychology_rounded, 'AI Coach', const CoachScreen(), FeatureFlags.aiCoach),
+      _NavTab(Icons.settings_rounded, 'Settings', const ProfileScreen(), FeatureFlags.settingsTab),
+    ];
+    return tabs.where((t) => t.enabled).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final activeTabs = _tabs;
+    final safeIndex = _selectedIndex.clamp(0, activeTabs.length - 1);
+
     return Scaffold(
       extendBody: true,
       body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
+        index: safeIndex,
+        children: activeTabs.map((t) => t.screen).toList(),
       ),
-      bottomNavigationBar: _buildBottomNav(),
+      bottomNavigationBar: _buildBottomNav(activeTabs, safeIndex),
     );
   }
 
-  Widget _buildBottomNav() {
+  Widget _buildBottomNav(List<_NavTab> tabs, int selected) {
     return Container(
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -67,8 +68,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(
-              _navItems.length,
-              (index) => _buildNavItem(index),
+              tabs.length,
+              (index) => _buildNavItem(index, tabs, selected),
             ),
           ),
         ),
@@ -76,9 +77,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     );
   }
 
-  Widget _buildNavItem(int index) {
-    final isSelected = _selectedIndex == index;
-    final item = _navItems[index];
+  Widget _buildNavItem(int index, List<_NavTab> tabs, int selected) {
+    final isSelected = selected == index;
+    final tab = tabs[index];
 
     return GestureDetector(
       onTap: () => setState(() => _selectedIndex = index),
@@ -91,11 +92,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Icon(
-          item['icon'] as IconData,
+          tab.icon,
           color: isSelected ? Colors.white : AppColors.textTertiaryDark,
           size: 22,
         ),
       ),
     );
   }
+}
+
+class _NavTab {
+  final IconData icon;
+  final String label;
+  final Widget screen;
+  final bool enabled;
+  const _NavTab(this.icon, this.label, this.screen, this.enabled);
 }
